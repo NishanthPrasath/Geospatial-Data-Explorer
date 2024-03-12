@@ -1,4 +1,4 @@
-# Assignment_03: Data as a Service
+# Data-as-a-Service (DaaS) Platform for Geospatial Data Exploration
 
 > [Application Link](http://54.88.51.70:8501) <br>
 > [Codelabs Documentation](https://codelabs-preview.appspot.com/?file_id=1zG832dq7KBnSKgSkrVcLHVQBfarUR8ALQIqqGmswVhE#4)<br>
@@ -6,82 +6,84 @@
 > Docker Images: [Backend](https://hub.docker.com/r/subhashchandran/assignment-03-fastapi),[Frontend](https://hub.docker.com/r/subhashchandran/assignment-03-streamlit) <br>
 > [Python Package](https://pypi.org/project/typernexrad-cli/0.1.0/) <br>
 
-
 ## Objective 
 
-The primary objective is to create a platform to provide data retrieval service for satellite images in NOAA’s GOES18 and Nexrad AWS S3 buckets. A user can either provide input for image-related attributes or directly provide a filename to generate a link to the file.
+The primary objective of this project is to create a platform that provides a data retrieval service for satellite images from NOAA's GOES18 and Nexrad AWS S3 buckets. Users can either provide input for image-related attributes or directly provide a filename to generate a link to the file.
 
-**Note:** The data is scrapped from publicly accessible data in NOAA’s S3 buckets - [GOES18](https://noaa-goes18.s3.amazonaws.com/index.html#ABI-L1b-RadC/) & [NEXRAD](https://noaa-nexrad-level2.s3.amazonaws.com/index.html) which is refreshed daily with Airflow DAGs
+**Note:** The data is scraped from publicly accessible data in NOAA's S3 buckets - [GOES18](https://noaa-goes18.s3.amazonaws.com/index.html#ABI-L1b-RadC/) & [NEXRAD](https://noaa-nexrad-level2.s3.amazonaws.com/index.html), which are refreshed daily with Airflow DAGs.
 
 ![sevir_sample](https://user-images.githubusercontent.com/114712818/218191862-49f8f32b-bc77-4e03-ae81-9ebac16b514a.gif)
 
-## Usecase
+## Use Case
 
-- A user can fetch the data either by providing date and station features or by providing a valid file name
-- A downloadable link to the file is provided for both NOAA’s and Private buckets
-- A plot for all NEXRAD stations across the US
+- Users can fetch data either by providing date and station features or by providing a valid file name.
+- A downloadable link to the file is provided for both NOAA's and private buckets.
+- A plot of all NEXRAD stations across the US is available.
 
-## Tech Components
+## Tech Stack
 
-- Backend - FastAPI, Airflow, AWS Cloudwatch
-- Frontend UI - Streamlit 
-- Deployment - Docker + AWS EC2, Typer CLI
+- Backend: FastAPI, Airflow, AWS Cloudwatch
+- Frontend UI: Streamlit
+- Deployment: Docker + AWS EC2, Typer CLI
 
 ## Architecture Diagram
+
 ![alt text](project_2.png)
 
-## Backend - FastAPI, Airflow, AWS Cloudwatch
+## Backend Components
 
-The backend is designed in a way that it facilitates API calls for communication between Frontend and the Backend. The RestAPIs developed with FASTAPI are restricted with JWTAuthentication through which a token is generated with an expiry of 30mins for every new user. The major operations are - 
+The backend is designed to facilitate API calls for communication between the frontend and the backend. The REST APIs, developed with FastAPI, are restricted with JWT authentication, which generates a token with an expiry of 30 minutes for every new user. The major operations include:
+
 - User retrieval and creation
 - Token authentication
-- Query data from the database as demanded
+- Querying data from the database as demanded
 - User activity tracking and API usage limitation
 - File source URL generation
 
-## Frontend - Streamlit
+## Frontend UI
 
-The UI was developed with the help of the python library of Streamlit framework. The application follows the following flow - 
+The UI was developed using the Streamlit framework, a Python library. The application follows the following flow:
 
-- User Login for existing users, or Sign up for new users
-- Once logged in there are five modules that the user can access - 
-  - Goes - Feature-based file extraction for Goes18 
-  - Goes file link - File name based url generation for Goes18
-  - Nexrad - Feature-based file extraction for Nexrad
-  - Nexrad file link - File name based url generation for Nexrad
-  - Nexrad plot - Plot of all Nexrad stations in the United States
-- User Dashboard - To track activity and remaining API hits displaying - 
-  - Active plan
-  - Used balance with the remaining limit
-  - Charts for API usage based on modules and overall at multiple timeframes
-- Logout - To exit the app
-- Admin Dashboard - To track all activity of the application 
-  - All users displayed based on the plan
-  - Multiple charts showcasing API usage across multiple timeframes
+- User login for existing users or sign up for new users
+- Once logged in, users can access five modules:
+  - GOES: Feature-based file extraction for GOES18
+  - GOES file link: File name-based URL generation for GOES18
+  - Nexrad: Feature-based file extraction for Nexrad
+  - Nexrad file link: File name-based URL generation for Nexrad
+  - Nexrad plot: Plot of all Nexrad stations in the United States
+- User Dashboard: Tracks activity and remaining API hits, displaying:
+  - Active plan
+  - Used balance with the remaining limit
+  - Charts for API usage based on modules and overall at multiple timeframes
+- Logout: Allows users to exit the app
+- Admin Dashboard: Tracks all activity of the application, including:
+  - All users displayed based on their plan
+  - Multiple charts showcasing API usage across multiple timeframes
 
-## Deployment - Docker + AWS EC2, Typer CLI
+## Deployment
 
-- Both the backend and frontend are individually containerized using docker. Then docker-compose is used to bind the two containers and are deployed on the AWS EC2 instance
-- The application can also be used through the terminal by installing the wheel package we have created. 
-- The usage activity is logged in AWS Cloudwatch and we have created a module for unit testing using the python library ‘Pytest’.  
+- Both the backend and frontend are individually containerized using Docker. Docker Compose is used to bind the two containers and deploy them on an AWS EC2 instance.
+- The application can also be used through the terminal by installing the provided wheel package.
+- Usage activity is logged in AWS Cloudwatch, and a module for unit testing has been created using the Python library 'Pytest'. 
 
-## Steps to run the application - 
+## Steps to Run the Application
 
-- Clone repository 
-- Create .env file with AWS Bucket and Logging credentials. Format to follow (access token automatically generates with login, but variable should be there) -
-```
-AWS_LOG_ACCESS_KEY= <enter your Log access Key>
-AWS_LOG_SECRET_KEY= <enter your Log secret Key>
+1. Clone the repository.
+2. Create a `.env` file with AWS Bucket and Logging credentials. Follow this format (access token automatically generates with login, but the variable should be there):
+   ```
+   AWS_LOG_ACCESS_KEY=<enter your Log access Key>
+   AWS_LOG_SECRET_KEY=<enter your Log secret Key>
 
-AWS_ACCESS_KEY1 = <enter your AWS access Key>
-AWS_SECRET_KEY1 = <enter your AWS secret Key>
+   AWS_ACCESS_KEY1=<enter your AWS access Key>
+   AWS_SECRET_KEY1=<enter your AWS secret Key>
 
-access_token=
- ```
-- Execute the docker compose file (docker-compose.yml) with the command ‘docker compose up’
+   access_token=
+   ```
+3. Execute the Docker Compose file (`docker-compose.yml`) with the command `docker compose up`.
 
 #### Attestation
-WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS WORK IN OUR ASSIGNMENT AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK
+
+WE ATTEST THAT WE HAVEN'T USED ANY OTHER STUDENTS' WORK IN OUR ASSIGNMENT AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK.
 
 Contribution:
 - Dhanush Kumar Shankar: 25%
