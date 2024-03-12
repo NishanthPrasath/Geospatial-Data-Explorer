@@ -27,9 +27,7 @@ The primary objective of this project is to create a platform that provides a da
 - Deployment: Docker + AWS EC2, Typer CLI
 
 ## Architecture Diagram
-
 ![alt text](project_2.png)
-
 ## Backend Components
 
 The backend is designed to facilitate API calls for communication between the frontend and the backend. The REST APIs, developed with FastAPI, are restricted with JWT authentication, which generates a token with an expiry of 30 minutes for every new user. The major operations include:
@@ -70,15 +68,15 @@ The UI was developed using the Streamlit framework, a Python library. The applic
 
 1. Clone the repository.
 2. Create a `.env` file with AWS Bucket and Logging credentials. Follow this format (access token automatically generates with login, but the variable should be there):
-   ```
-   AWS_LOG_ACCESS_KEY=<enter your Log access Key>
-   AWS_LOG_SECRET_KEY=<enter your Log secret Key>
+ ```
+ AWS_LOG_ACCESS_KEY=<enter your Log access Key>
+ AWS_LOG_SECRET_KEY=<enter your Log secret Key>
 
-   AWS_ACCESS_KEY1=<enter your AWS access Key>
-   AWS_SECRET_KEY1=<enter your AWS secret Key>
+ AWS_ACCESS_KEY1=<enter your AWS access Key>
+ AWS_SECRET_KEY1=<enter your AWS secret Key>
 
-   access_token=
-   ```
+ access_token=
+ ```
 3. Execute the Docker Compose file (`docker-compose.yml`) with the command `docker compose up`.
 
 #### Attestation
